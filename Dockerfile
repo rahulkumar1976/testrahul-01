@@ -1,4 +1,5 @@
-RUN apt-get update
+FROM ubuntu:trusty
+RUN apt-get install -y nginx
 RUN apt-get install -y curl
 RUN apt-get install -y nmap
 RUN apt-get install -y socat
@@ -14,3 +15,4 @@ RUN apt-get install -y build-essential
 RUN echo "source /root/bash_extra" >> /root/.bashrc
 ADD bash_extra /root/bash_extra
 CMD ["/bin/bash"]
+
