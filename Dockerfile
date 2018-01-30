@@ -1,28 +1,16 @@
-FROM    ubuntu:trusty
-
-# File Author / Maintainer
-MAINTAINER Anand Mani Sankar
-
-# Install Node.js and other dependencies
-RUN apt-get update && \
-    apt-get -y install curl && \
-    curl -sL https://deb.nodesource.com/setup | sudo bash - && \
-    apt-get -y install python build-essential nodejs
-
-# Install nodemon
-RUN npm install -g nodemon
-
-# Provides cached layer for node_modules
-ADD package.json /tmp/package.json
-RUN cd /tmp && npm install
-RUN mkdir -p /src && cp -a /tmp/node_modules /src/
-
-# Define working directory
-WORKDIR /src
-ADD . /src
-
-# Expose port
-EXPOSE  8080
-
-# Run app using nodemon
-CMD ["nodemon", "/src/index.js"]
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y nmap
+RUN apt-get install -y socat
+RUN apt-get install -y openssh-client
+RUN apt-get install -y openssl
+RUN apt-get install -y iotop
+RUN apt-get install -y strace
+RUN apt-get install -y tcpdump
+RUN apt-get install -y lsof
+RUN apt-get install -y inotify-tools
+RUN apt-get install -y sysstat
+RUN apt-get install -y build-essential
+RUN echo "source /root/bash_extra" >> /root/.bashrc
+ADD bash_extra /root/bash_extra
+CMD ["/bin/bash"]
