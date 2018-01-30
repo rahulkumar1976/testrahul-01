@@ -5,7 +5,7 @@ FROM node:7-onbuild
 LABEL maintainer "miiro@getintodevops.com"
 
 # set a health check
-sudo usermod -a -G docker $USER
+#sudo usermod -a -G docker $USER
 HEALTHCHECK --interval=5s \
             --timeout=5s \
             CMD curl -f http://0.0.0.0:8000 || exit 1
