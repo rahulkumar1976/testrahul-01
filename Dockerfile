@@ -1,14 +1,28 @@
-# use a node base image
-FROM node:7-onbuild
+FROM    ubuntu:trusty
 
-# set maintainer
-LABEL maintainer "miiro@getintodevops.com"
+# File Author / Maintainer
+MAINTAINER Anand Mani Sankar
 
-# set a health check
-#sudo usermod -a -G docker $USER
-HEALTHCHECK --interval=5s \
-            --timeout=5s \
-            CMD curl -f http://0.0.0.0:8000 || exit 1
+# Install Node.js and other dependencies
+RUN apt-get update && \
+    apt-get -y install curl && \
+    curl -sL https://deb.nodesource.com/setup | sudo bash - && \
+    apt-get -y install python build-essential nodejs
 
-# tell docker what port to expose
-EXPOSE 8000
+# Install nodemon
+RUN npm install -g nodemon
+
+# Provides cached layer for node_modules
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /src && cp -a /tmp/node_modules /src/
+
+# Define working directory
+WORKDIR /src
+ADD . /src
+
+# Expose port
+EXPOSE  8080
+
+# Run app using nodemon
+CMD ["nodemon", "/src/index.js"]
